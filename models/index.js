@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var config   = require('../config');
-var logger = require('../common/logger')
+var log4js = require('log4js');
+var logger = log4js.getLogger();
 
 mongoose.connect(config.db, {
   server: {poolSize: 20}
@@ -9,17 +10,10 @@ mongoose.connect(config.db, {
     logger.error('connect to %s error: ', config.db, err.message);
     process.exit(1);
   }
+  else {
+    logger.debug("数据库连接成功!");
+  }
 });
-
 // models
 require('./user');
-require('./topic');
-require('./reply');
-require('./topic_collect');
-require('./message');
-
 exports.User         = mongoose.model('User');
-exports.Topic        = mongoose.model('Topic');
-exports.Reply        = mongoose.model('Reply');
-exports.TopicCollect = mongoose.model('TopicCollect');
-exports.Message      = mongoose.model('Message');
