@@ -11,11 +11,11 @@ var utility = require('utility');
  * @param {Array} names 用户名列表
  * @param {Function} callback 回调函数
  */
-exports.getUsersByOpenid = function (opendId, callback) {
-  if (opendId.length === 0) {
+exports.getUsersByOpenid = function (openId, callback) {
+  if (openId.length === 0) {
     return callback(null, []);
   }
-  User.find({ opendId: { $in: opendId } }, callback);
+  WxUser.find({ openId: { $in: openId } }, callback);
 };
 
 /**
@@ -95,7 +95,7 @@ exports.getUsersByQuery = function (query, opt, callback) {
  * @param {Function} callback 回调函数
  */
 exports.getUserByNameAndKey = function (loginname, key, callback) {
-  User.findOne({loginname: loginname, retrieve_key: key}, callback);
+  WxUser.findOne({loginname: loginname, retrieve_key: key}, callback);
 };
 
 exports.newAndSave = function (openId, AppID, arcID, avatarUrl, city, language,nickName,province,telNumber,uName,time,joinerNamem,joinerTel,joinerRemark, callback) {
@@ -114,5 +114,5 @@ exports.newAndSave = function (openId, AppID, arcID, avatarUrl, city, language,n
   wxuser.joinerNamem      = joinerNamem;
   wxuser.joinerTel      = joinerTel;
   wxuser.joinerRemark = joinerRemark;
-  user.save(callback);
+  wxuser.save(callback);
 };

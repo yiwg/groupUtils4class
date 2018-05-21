@@ -16,4 +16,6 @@ mongoose.connect(config.db, {
 });
 // models
 require('./user');
+require('./wxuser');
 exports.User         = mongoose.model('User');
+exports.WxUser         = mongoose.model('WxUser');
