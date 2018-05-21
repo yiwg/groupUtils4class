@@ -1,7 +1,7 @@
 var models  = require('../models/index');
 var WxUser    = models.WxUser;
 var utility = require('utility');
-var uuid    = require('node-uuid');
+//var uuid    = require('node-uuid');
 
 /**
  * 根据用户名列表查找用户列表
