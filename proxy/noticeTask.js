@@ -1,9 +1,23 @@
 var models  = require('../models/index');
 var WxUser    = models.WxUser;
+var NoticeTask    = models.NoticeTask;
 var utility = require('utility');
 var log4js = require('log4js');
 var logger = log4js.getLogger();
 logger.level = 'debug';
+
+
+exports.newAndSave = function (openId, noticeId, date, fileNumber, title, description,name,callback) {
+  var noticeTask        = new NoticeTask();
+  noticeTask.openId     = openId;
+  noticeTask.noticeId   = noticeId;
+  noticeTask.date       = date;
+  noticeTask.fileNumber = fileNumber;
+  noticeTask.title      = title;
+  noticeTask.description= description;
+  noticeTask.name       = name;
+  noticeTask.save(callback);
+};
 
 /**
  * 根据用户名列表查找用户列表
@@ -114,21 +128,4 @@ exports.getUserByNameAndKey = function (loginname, key, callback) {
   WxUser.findOne({loginname: loginname, retrieve_key: key}, callback);
 };
 
-exports.newAndSave = function (openId, appID, arcID, avatarUrl, city, language,nickName,province,telNumber,uName,time,joinerNamem,joinerTel,joinerRemark, callback) {
-  var wxuser         = new WxUser();
-  wxuser.openId        = openId;
-  wxuser.appID   = appID;
-  wxuser.arcID        = arcID;
-  wxuser.avatarUrl       = avatarUrl;
-  wxuser.city      = city;
-  wxuser.language      = language;
-  wxuser.nickName = nickName;
-  wxuser.province        = province;
-  wxuser.telNumber   = telNumber;
-  wxuser.uName        = uName;
-  wxuser.time       = time;
-  wxuser.joinerNamem      = joinerNamem;
-  wxuser.joinerTel      = joinerTel;
-  wxuser.joinerRemark = joinerRemark;
-  wxuser.save(callback);
-};
+

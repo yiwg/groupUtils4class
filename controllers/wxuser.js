@@ -50,13 +50,9 @@ exports.forex_require_url=function (req, res, next) {
 exports.getOpenid=function (req, res, next) {
   logger.debug("进入getOpenid......"+JSON.stringify(req.body));
   var appid=req.query.appid;
-  logger.debug("appid="+appid);
   var secret=req.query.secret;
-  logger.debug("secret="+secret);
   var js_code=req.query.js_code;
-  logger.debug("js_code="+js_code);
   grant_type=req.query.grant_type;
-  logger.debug("grant_type="+grant_type);
   url="https://api.weixin.qq.com/sns/jscode2session?appid="+appid+"&secret="+secret+"&js_code="+js_code+"&grant_type="+grant_type;
   request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
@@ -66,5 +62,25 @@ exports.getOpenid=function (req, res, next) {
       logger.debug(JSON.stringify(jsBody));
       res.end(JSON.stringify(jsBody));
     }
+  })
+}
+
+exports.wxuserDataSave=function (req, res, next) {
+  logger.debug("进入wxuserDataSave......req:"+JSON.stringify(req.body));
+  var wxuser={};
+  wxuser.openid=req.query.openid;
+  logger.debug("openid="+wxuser.openid);
+  wxuser.avatarUrl=req.query.avatarUrl;
+  logger.debug("openid="+wxuser.avatarUrl);
+  wxuser.city=req.query.city;
+  wxuser.language=req.query.language;
+  wxuser.nickName=req.query.nickName;
+  wxuser.province=req.query.province;
+  wxuser.time=req.query.time;
+  WxUser.updateUserInfo(wxuser,function (err) {
+    logger.debug("进入updateUserInfo......")
+      if(err){
+        logger.error(err);
+      }
   })
 }

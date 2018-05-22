@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var user = require('./controllers/user');
+var NoticeTask=require('./controllers/noticeTask.js');
 var wxUser=require('./controllers/wxuser');
 var log4js = require('log4js');
 var logger = log4js.getLogger();
@@ -17,9 +18,8 @@ router.get('/', function(req, res, next) {
 router.get('/user', user.index);
 router.get('/application/link/forex_require_url', wxUser.forex_require_url);
 router.get('/application/link/getOpenid', wxUser.getOpenid);
-
+router.get('/application/link/wxuserDataSave', wxUser.wxuserDataSave);
 //群通知相关
-//application/notice/getNoticeTask
-//router.get('application/notice/getNoticeTask', wxUser.getNoticeTask);
+router.get('/application/notice/createNoticeTask', NoticeTask.createNoticeTask);
 module.exports = router;
 

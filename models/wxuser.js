@@ -6,7 +6,7 @@ var _ = require('lodash');
 
 var WxUserSchema = new Schema({
   openId: { type: String,unique: true},
-  AppID: { type: String},
+  appID: { type: String},
   arcID: { type: String },
   avatarUrl: { type: String},
   city: { type: String },
