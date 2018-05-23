@@ -18,6 +18,8 @@ mongoose.connect(config.db, {
 require('./user');
 require('./wxuser');
 require('./noticeTask');
+require('./noticeUser');
 exports.User         = mongoose.model('User');
 exports.WxUser         = mongoose.model('WxUser');
 exports.NoticeTask      = mongoose.model('NoticeTask');
+exports.NoticeUser      = mongoose.model('NoticeUser');

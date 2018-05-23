@@ -21,5 +21,7 @@ router.get('/application/link/getOpenid', wxUser.getOpenid);
 router.get('/application/link/wxuserDataSave', wxUser.wxuserDataSave);
 //群通知相关
 router.get('/application/notice/createNoticeTask', NoticeTask.createNoticeTask);
+router.get('/application/notice/getNoticeTask', NoticeTask.getNoticeTask);
+router.get('/application/notice/storeViewerInfor', NoticeTask.storeViewerInfor);
 module.exports = router;
 

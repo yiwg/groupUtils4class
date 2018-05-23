@@ -1,22 +1,31 @@
 var models  = require('../models/index');
 var WxUser    = models.WxUser;
 var NoticeTask    = models.NoticeTask;
+var NoticeUser    = models.NoticeUser;
 var utility = require('utility');
 var log4js = require('log4js');
 var logger = log4js.getLogger();
 logger.level = 'debug';
 
-
-exports.newAndSave = function (openId, noticeId, date, fileNumber, title, description,name,callback) {
+exports.newAndSave = function (openId, noticeId,date, fileNumber, title, description,name,callback) {
   var noticeTask        = new NoticeTask();
   noticeTask.openId     = openId;
   noticeTask.noticeId   = noticeId;
-  noticeTask.date       = date;
+  noticeTask.date       = new Date(date);//.Format("yyyy-MM-dd HH:mm:ss");
+  logger.debug("进入newAndSave......date:"+noticeTask.date);
   noticeTask.fileNumber = fileNumber;
   noticeTask.title      = title;
   noticeTask.description= description;
   noticeTask.name       = name;
   noticeTask.save(callback);
+};
+
+exports.newAndSaveNU = function (openId, noticeId,callback) {
+  var noticeUser        = new NoticeUser();
+  noticeUser.openId     = openId;
+  noticeUser.noticeId   = noticeId;
+  logger.debug("openId="+noticeUser.openId+"noticeId="+noticeUser.noticeId);
+  noticeUser.save(callback);
 };
 
 /**
@@ -27,11 +36,21 @@ exports.newAndSave = function (openId, noticeId, date, fileNumber, title, descri
  * @param {Array} names 用户名列表
  * @param {Function} callback 回调函数
  */
-exports.getUsersByOpenid = function (openId, callback) {
-  if (openId.length === 0) {
+exports.getNtByNtId = function (noticeId, callback) {
+  if (noticeId.length === 0) {
     return callback(null, []);
   }
-  WxUser.find({ openId: { $in: openId } }, callback);
+  logger.debug("进入getNtByNtId......")
+  NoticeTask.find({ noticeId: { $in: noticeId } }, callback);
+};
+
+
+exports.getNUByQuery = function (noticeUser, callback) {
+  if (noticeUser.noticeId.length === 0||noticeUser.openId===0) {
+    return callback(null, []);
+  }
+  logger.debug("进入getNUByQuery......")
+  NoticeUser.find({ noticeId: { $in: noticeUser.noticeId },openId:{ $in: noticeUser.openId} }, callback);
 };
 
 /**
