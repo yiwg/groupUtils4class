@@ -43,8 +43,32 @@ exports.getNtByNtId = function (noticeId, callback) {
   logger.debug("进入getNtByNtId......")
   NoticeTask.find({ noticeId: { $in: noticeId } }, callback);
 };
-
-
+exports.getNtByOpenId = function (openId, callback) {
+  if (openId.length === 0) {
+    return callback(null, []);
+  }
+  logger.debug("进入getNtByOpenId......")
+  NoticeTask.find({ openId: { $in: openId } }, callback);
+};
+exports.getViewNt= function (openId, callback) {
+  if (openId.length === 0) {
+    return callback(null, []);
+  }
+  logger.debug("getViewNt......")
+  NoticeUser.find({ openId: { $in: openId } }, function (err,Nu) {
+    if(err){
+      logger.error(err);
+    }else{
+      logger.debug("Nu.length="+Nu.length)
+      var ntIds=[];
+      for(var n in Nu) {
+        ntIds.add(n.noticeId);
+      };
+      logger.debug("ntIds.length="+ntIds.length)
+      NoticeTask.find().where('noticeId',ntIds).exec(callback);
+    }
+  });
+};
 exports.getNUByQuery = function (noticeUser, callback) {
   if (noticeUser.noticeId.length === 0||noticeUser.openId===0) {
     return callback(null, []);

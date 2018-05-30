@@ -23,5 +23,8 @@ router.get('/application/link/wxuserDataSave', wxUser.wxuserDataSave);
 router.get('/application/notice/createNoticeTask', NoticeTask.createNoticeTask);
 router.get('/application/notice/getNoticeTask', NoticeTask.getNoticeTask);
 router.get('/application/notice/storeViewerInfor', NoticeTask.storeViewerInfor);
+router.get('/application/notice/myView', NoticeTask.myView);
+router.get('/application/notice/myCreate', NoticeTask.myCreate);
+
 module.exports = router;
 

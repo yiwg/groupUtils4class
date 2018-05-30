@@ -45,8 +45,8 @@ exports.getNoticeTask=function (req, res, next) {
 exports.storeViewerInfor=function (req, res, next) {
     logger.debug("storeViewerInfor......"+JSON.stringify(req.query));
     var noticeUser={};
-    noticeUser.noticeId="ofMpY5BOMtT96VGIdP3xQSgCenik";//req.query.openid;
-    noticeUser.openId="15270895828176766017";//req.query.noticeid;
+    noticeUser.noticeId=req.query.noticeid;
+    noticeUser.openId=req.query.openid;
     NoticeTask.getNUByQuery(noticeUser,function (err,nu) {
         if(err){
             logger.debug(err);
@@ -67,4 +67,30 @@ exports.storeViewerInfor=function (req, res, next) {
     })
     res.end();
 
+}
+exports.myCreate=function (req, res, next) {
+    logger.debug("myCreate......"+JSON.stringify(req.query));
+    var noticeUser={};
+    noticeUser.openId=req.query.openid;
+    NoticeTask.getNtByOpenId(noticeUser.openId,function (err,nt) {
+        if(err){
+            logger.error(err);
+        }
+        //logger.debug("nt:"+nt.date)
+        res.end(JSON.stringify(nt))
+    })
+}
+
+exports.myView=function (req, res, next) {
+    logger.debug("myView......"+JSON.stringify(req.query));
+    var noticeUser={};
+    noticeUser.openId=req.query.openid;
+    logger.debug("myView......openId="+ noticeUser.openId);
+    NoticeTask.getViewNt(noticeUser.openId,function (err,nt) {
+        if(err){
+            logger.error(err);
+        }else {
+            res.end(JSON.stringify(nt))
+        }
+    })
 }
