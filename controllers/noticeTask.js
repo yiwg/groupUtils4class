@@ -42,6 +42,20 @@ exports.getNoticeTask=function (req, res, next) {
       })
 }
 
+exports.getAllViewer=function (req, res, next) {
+    logger.debug("getAllViewer......"+JSON.stringify(req.query));
+    var noticeTask={};
+    noticeTask.noticeid=req.query.noticeid;
+    logger.debug("noticeid:"+noticeTask.noticeid)
+    NoticeTask.getAllViewer(noticeTask.noticeid,function (err,nt) {
+        if(err){
+            logger.error(err);
+        }
+        logger.debug("nt:"+nt.date)
+        res.end(JSON.stringify(nt))
+    })
+}
+
 exports.storeViewerInfor=function (req, res, next) {
     logger.debug("storeViewerInfor......"+JSON.stringify(req.query));
     var noticeUser={};
@@ -51,7 +65,8 @@ exports.storeViewerInfor=function (req, res, next) {
         if(err){
             logger.debug(err);
         } else{
-            if(nu!=null||nu!=undefined){
+            logger.debug("nu="+nu.openId);
+            if(nu.length>0){
                 logger.info("浏览用户已存在");
             } else{
                 NoticeTask.newAndSaveNU( noticeUser.openId,noticeUser.noticeId,function (err) {

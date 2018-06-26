@@ -54,26 +54,47 @@ exports.getViewNt= function (openId, callback) {
   if (openId.length === 0) {
     return callback(null, []);
   }
-  logger.debug("getViewNt......")
+  logger.debug("getViewNt......openId="+openId);
   NoticeUser.find({ openId: { $in: openId } }, function (err,Nu) {
     if(err){
       logger.error(err);
     }else{
       logger.debug("Nu.length="+Nu.length)
-      var ntIds=[];
-      for(var n in Nu) {
-        ntIds.add(n.noticeId);
+      var ntIds=new Array();
+      for(i=0;i<Nu.length;i++){ //   var n in Nu) {
+        ntIds[i]=Nu[i].noticeId;
       };
       logger.debug("ntIds.length="+ntIds.length)
       NoticeTask.find().where('noticeId',ntIds).exec(callback);
     }
   });
 };
+
+exports.getAllViewer= function (noticeId, callback) {
+  if (noticeId.length === 0) {
+    return callback(null, []);
+  }
+  logger.debug("getAllViewer......noticeId="+noticeId);
+  NoticeUser.find({ noticeId: { $in: noticeId } }, function (err,Nu) {
+    if(err){
+      logger.error(err);
+    }else{
+      logger.debug("Nu.length="+Nu.length)
+      var ntIds=new Array();
+      for(i=0;i<Nu.length;i++){ //   var n in Nu) {
+        ntIds[i]=Nu[i].openId;
+      };
+      logger.debug("ntIds.length="+ntIds.length)
+      WxUser.find().where('openId',ntIds).exec(callback);
+    }
+  });
+};
+
 exports.getNUByQuery = function (noticeUser, callback) {
   if (noticeUser.noticeId.length === 0||noticeUser.openId===0) {
     return callback(null, []);
   }
-  logger.debug("进入getNUByQuery......")
+  logger.debug("进入getNUByQuery......noticeUser.noticeId="+noticeUser.noticeId+"noticeUser.openId="+noticeUser.openId)
   NoticeUser.find({ noticeId: { $in: noticeUser.noticeId },openId:{ $in: noticeUser.openId} }, callback);
 };
 
