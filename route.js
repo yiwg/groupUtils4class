@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var user = require('./controllers/user');
 var NoticeTask=require('./controllers/noticeTask.js');
+var VoteTask=require('./controllers/voteTask.js');
 var wxUser=require('./controllers/wxuser');
 var log4js = require('log4js');
 var logger = log4js.getLogger();
@@ -26,6 +27,10 @@ router.get('/application/notice/storeViewerInfor', NoticeTask.storeViewerInfor);
 router.get('/application/notice/myView', NoticeTask.myView);
 router.get('/application/notice/myCreate', NoticeTask.myCreate);
 router.get('/application/notice/getAllViewer', NoticeTask.getAllViewer);
+//群投票相关
+router.get('/application/vote/createVoteTask', VoteTask.createVoteTask);
+router.get('/application/vote/getVoteTask', VoteTask.getVoteTask);
+router.get('/application/vote/storeVoteOne', VoteTask.storeVoteOne);
 
 module.exports = router;
 
