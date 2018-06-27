@@ -1,5 +1,4 @@
 var models  = require('../models/index');
-var WxUser    = models.WxUser;
 var VoteTask    = models.VoteTask;
 var VoteUser    = models.VoteUser;
 var utility = require('utility');
@@ -30,24 +29,40 @@ exports.getVtByVtId = function (voteId, callback) {
 exports.storeVoteOne = function (voteTask,callback) {
   logger.debug("进入storeVoteOne......")
   callback = callback || _.noop;
-  /*if (!voteTask) {
+  if (!voteTask) {
     return callback();
-  }*/
-  var query = { voteId: voteTask.voteId };
-  logger.debug("进入storeVoteOne......1")
-  var VoteUser=new VoteUser();
-  VoteUser.openId=voteTask.openId;
-  logger.debug("进入storeVoteOne......2")
-  VoteUser.voteId=voteTask.voteId;
-  logger.debug("进入storeVoteOne......3")
-  VoteUser.save(callback)
-  /*WxUser.update(query, { $set: { optionData: voteTask.optionData } }, { multi: true }).exec(function () {
-        var VoteUser=new VoteUser();
-        VoteUser.openId=voteTask.openId;
-        VoteUser.voteId=voteTask.voteId;
-        VoteUser.save(callback)
   }
-  );*/
+  var query = { voteId: voteTask.voteId };
+  VoteTask.update(query, { $set: { optionData: voteTask.optionData } }, { multi: true }).exec(function () {
+        logger.debug("进入storeVoteOne......1")
+        var voteUser=new VoteUser();
+        voteUser.userId=voteTask.openId;
+        logger.debug("进入storeVoteOne......2")
+        voteUser.voteId=voteTask.voteId;
+        logger.debug("进入storeVoteOne......3")
+        voteUser.save(callback)
+  }
+  );
+};
+
+exports.getJoinVt= function (openId, callback) {
+  if (openId.length === 0) {
+    return callback(null, []);
+  }
+  logger.debug("getJoinVt......openId="+openId);
+  VoteUser.find({ openId: { $in: openId } }, function (err,Vu) {
+    if(err){
+      logger.error(err);
+    }else{
+      logger.debug("Vu.length="+Vu.length)
+      var ntIds=new Array();
+      for(i=0;i<Vu.length;i++){ //   var n in Nu) {
+        ntIds[i]=Vu[i].voteId;
+      };
+      logger.debug("ntIds.length="+ntIds.length)
+      VoteTask.find().where('voteId',ntIds).exec(callback);
+    }
+  });
 };
 /*
 exports.getNtByOpenId = function (openId, callback) {

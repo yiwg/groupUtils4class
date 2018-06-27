@@ -50,9 +50,8 @@ exports.storeVoteOne=function (req, res, next) {
     logger.debug("storeVoteOne......"+JSON.stringify(req.query));
     var voteTask={};
     voteTask.voteId=req.query.voteid;
-    voteTask.openId=req.query.openId;
+    voteTask.openId=req.query.openid;
     voteTask.optionData=req.query.optionData;
-    
     logger.debug("voteId:"+voteTask.voteId)
     VoteTask.storeVoteOne(voteTask,function (err) {
         if(err){
@@ -60,6 +59,20 @@ exports.storeVoteOne=function (req, res, next) {
         }
        // logger.debug("nt:"+vt.date)
         res.end()
+    })
+}
+
+exports.myJoin=function (req, res, next) {
+    logger.debug("myJoin......"+JSON.stringify(req.query));
+    var voteUser={};
+    voteUser.openId=req.query.openid;
+    logger.debug("myJoin......openId="+ voteUser.openId);
+    VoteTask.getJoinVt(voteUser.openId,function (err,nt) {
+        if(err){
+            logger.error(err);
+        }else {
+            res.end(JSON.stringify(nt))
+        }
     })
 }
 /*
