@@ -30,11 +30,24 @@ exports.getVtByVtId = function (voteId, callback) {
 exports.storeVoteOne = function (voteTask,callback) {
   logger.debug("进入storeVoteOne......")
   callback = callback || _.noop;
-  if (!voteTask) {
+  /*if (!voteTask) {
     return callback();
-  }
+  }*/
   var query = { voteId: voteTask.voteId };
-  WxUser.update(query, { $set: { optionData: voteTask.optionData } }, { multi: true }).exec(callback);
+  logger.debug("进入storeVoteOne......1")
+  var VoteUser=new VoteUser();
+  VoteUser.openId=voteTask.openId;
+  logger.debug("进入storeVoteOne......2")
+  VoteUser.voteId=voteTask.voteId;
+  logger.debug("进入storeVoteOne......3")
+  VoteUser.save(callback)
+  /*WxUser.update(query, { $set: { optionData: voteTask.optionData } }, { multi: true }).exec(function () {
+        var VoteUser=new VoteUser();
+        VoteUser.openId=voteTask.openId;
+        VoteUser.voteId=voteTask.voteId;
+        VoteUser.save(callback)
+  }
+  );*/
 };
 /*
 exports.getNtByOpenId = function (openId, callback) {
