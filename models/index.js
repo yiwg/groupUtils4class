@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var config   = require('../config');
 var log4js = require('log4js');
 var logger = log4js.getLogger();
-
 mongoose.connect(config.db, {
   server: {poolSize: 20}
 }, function (err) {
@@ -21,9 +20,11 @@ require('./noticeTask');
 require('./noticeUser');
 require('./voteUser');
 require('./voteTask');
+require('./voteChatGroup');
 exports.User         = mongoose.model('User');
 exports.WxUser         = mongoose.model('WxUser');
 exports.NoticeTask      = mongoose.model('NoticeTask');
 exports.NoticeUser      = mongoose.model('NoticeUser');
 exports.VoteUser      = mongoose.model('VoteUser');
 exports.VoteTask      = mongoose.model('VoteTask');
+exports.VoteTask      = mongoose.model('VoteCahtGroup');

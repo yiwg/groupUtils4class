@@ -1,6 +1,7 @@
 var models  = require('../models/index');
 var VoteTask    = models.VoteTask;
 var VoteUser    = models.VoteUser;
+var VoteChatGroup    = models.VoteChatGroup;
 var utility = require('utility');
 var log4js = require('log4js');
 var logger = log4js.getLogger();
@@ -50,11 +51,52 @@ exports.getJoinVt= function (openId, callback) {
     return callback(null, []);
   }
   logger.debug("getJoinVt......openId="+openId);
-  VoteUser.find({ openId: { $in: openId } }, function (err,Vu) {
+  VoteUser.find({ "userId": openId}, function (err,Vu) {
     if(err){
       logger.error(err);
     }else{
       logger.debug("Vu.length="+Vu.length)
+      var ntIds=new Array();
+      for(i=0;i<Vu.length;i++){ //   var n in Nu) {
+        ntIds[i]=Vu[i].voteId;
+      };
+      logger.debug("ntIds.length="+ntIds.length)
+      VoteTask.find().where('voteId',ntIds).exec(callback);
+    }
+  });
+};
+
+exports.getCreateVt= function (openId, callback) {
+  if (openId.length === 0) {
+    return callback(null, []);
+  }
+  logger.debug("进入getCreateVt......")
+  VoteTask.find({ openId:  openId  }, callback);
+};
+exports.storeVoteGroup= function (voteTask, callback) {
+  logger.debug("进入storeVoteGroup......")
+  VoteChatGroup.find({ voteId: voteTask.voteId ,groupId: voteTask.groupId}, function (err,vg) {
+    if(vg.length>0){
+      logger.log("voteGroup已存在");
+      callback();
+    }else {
+      var voteGroup=new VoteChatGroup();
+      voteGroup.groupId=voteTask.groupId;
+      voteGroup.voteId=voteTask.voteId;
+      voteGroup.save(callback)
+    }
+  });
+};
+exports.getGIDTask= function (voteTask, callback) {
+  if (voteTask.groupId.length === 0) {
+    return callback(null, []);
+  }
+  logger.debug("getGIDTask......openId="+voteTask.groupId);
+  VoteChatGroup.find({ "groupId": groupId}, function (err,Vg) {
+    if(err){
+      logger.error(err);
+    }else{
+      logger.debug("Vg.length="+Vg.length)
       var ntIds=new Array();
       for(i=0;i<Vu.length;i++){ //   var n in Nu) {
         ntIds[i]=Vu[i].voteId;

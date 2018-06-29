@@ -7,7 +7,6 @@ var request = require('request');
 var log4js = require('log4js');
 var logger = log4js.getLogger();
 logger.level = 'debug';
-
 exports.createVoteTask=function (req, res, next) {
   logger.debug("进入createVoteTask......"+JSON.stringify(req.query));
   var voteTask={};
@@ -71,6 +70,49 @@ exports.myJoin=function (req, res, next) {
         if(err){
             logger.error(err);
         }else {
+            logger.debug("+++++++++++"+nt.length+"++++++++++++++++++");
+            res.end(JSON.stringify(nt))
+        }
+    })
+}
+exports.myCreate=function (req, res, next) {
+    logger.debug("myCreat......"+JSON.stringify(req.query));
+    var voteUser={};
+    voteUser.openId=req.query.openid;
+    logger.debug("myJoin......openId="+ voteUser.openId);
+    VoteTask.getCreateVt(voteUser.openId,function (err,nt) {
+        if(err){
+            logger.error(err);
+        }else {
+            logger.debug("获取的vote数据长度为:"+nt.length)
+            res.end(JSON.stringify(nt))
+        }
+    })
+}
+exports.getGIDTask=function (req, res, next) {
+    logger.debug("getGIDTask......"+JSON.stringify(req.query));
+    var voteTask={};
+    voteTask.groupId=req.query.gid;
+    logger.debug("getGIDTask......groupId="+ voteTask.groupId);
+    VoteTask.getGIDTask(voteTask.groupId,function (err,nt) {
+        if(err){
+            logger.error(err);
+        }else {
+            logger.debug("获取的vote数据长度为:"+nt.length)
+            res.end(JSON.stringify(nt))
+        }
+    })
+}
+exports.storeVoteGId=function (req, res, next) {
+    logger.debug("storeVoteGId......"+JSON.stringify(req.query));
+    var voteUser={};
+    voteUser.openId=req.query.openid;
+    logger.debug("myJoin......openId="+ voteUser.openId);
+    VoteTask.getCreateVt(voteUser.openId,function (err,nt) {
+        if(err){
+            logger.error(err);
+        }else {
+            logger.debug("获取的vote数据长度为:"+nt.length)
             res.end(JSON.stringify(nt))
         }
     })

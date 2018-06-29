@@ -32,4 +32,6 @@ router.get('/application/vote/createVoteTask', VoteTask.createVoteTask);
 router.get('/application/vote/getVoteTask', VoteTask.getVoteTask);
 router.get('/application/vote/storeVoteOne', VoteTask.storeVoteOne);
 router.get('/application/vote/myJoin', VoteTask.myJoin);
+router.get('/application/vote/myCreate', VoteTask.myCreate);
+//router.get('/application/vote/getGIDTask', VoteTask.getGIDTask);
 module.exports = router;
