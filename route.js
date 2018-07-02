@@ -3,10 +3,12 @@ var router = express.Router();
 var user = require('./controllers/user');
 var NoticeTask=require('./controllers/noticeTask.js');
 var VoteTask=require('./controllers/voteTask.js');
+var link=require('./controllers/link.js');
 var wxUser=require('./controllers/wxuser');
 var log4js = require('log4js');
 var logger = log4js.getLogger();
 logger.level = 'debug';
+require('./common/WXBizDataCrypt')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -33,5 +35,8 @@ router.get('/application/vote/getVoteTask', VoteTask.getVoteTask);
 router.get('/application/vote/storeVoteOne', VoteTask.storeVoteOne);
 router.get('/application/vote/myJoin', VoteTask.myJoin);
 router.get('/application/vote/myCreate', VoteTask.myCreate);
-//router.get('/application/vote/getGIDTask', VoteTask.getGIDTask);
+router.get('/application/vote/getGIDTask', VoteTask.getGIDTask);
+router.get('/application/vote/storeVoteGId', VoteTask.storeVoteGId);
+//应用程序相关
+router.get('/application/link/wx_xcx', link.wx_xcx);
 module.exports = router;

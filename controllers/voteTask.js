@@ -79,7 +79,7 @@ exports.myCreate=function (req, res, next) {
     logger.debug("myCreat......"+JSON.stringify(req.query));
     var voteUser={};
     voteUser.openId=req.query.openid;
-    logger.debug("myJoin......openId="+ voteUser.openId);
+    logger.debug("myCreate......openId="+ voteUser.openId);
     VoteTask.getCreateVt(voteUser.openId,function (err,nt) {
         if(err){
             logger.error(err);
@@ -93,7 +93,6 @@ exports.getGIDTask=function (req, res, next) {
     logger.debug("getGIDTask......"+JSON.stringify(req.query));
     var voteTask={};
     voteTask.groupId=req.query.gid;
-    logger.debug("getGIDTask......groupId="+ voteTask.groupId);
     VoteTask.getGIDTask(voteTask.groupId,function (err,nt) {
         if(err){
             logger.error(err);
@@ -105,15 +104,15 @@ exports.getGIDTask=function (req, res, next) {
 }
 exports.storeVoteGId=function (req, res, next) {
     logger.debug("storeVoteGId......"+JSON.stringify(req.query));
-    var voteUser={};
-    voteUser.openId=req.query.openid;
-    logger.debug("myJoin......openId="+ voteUser.openId);
-    VoteTask.getCreateVt(voteUser.openId,function (err,nt) {
+    var voteGroup={};
+    voteGroup.groupId=req.query.gid;
+    voteGroup.voteId=req.query.voteid;
+    logger.debug("storeVoteGId......gid="+  voteGroup.groupId+";voteId="+voteGroup.voteId);
+    VoteTask.storeVoteGroup(voteGroup,function (err) {
         if(err){
             logger.error(err);
         }else {
-            logger.debug("获取的vote数据长度为:"+nt.length)
-            res.end(JSON.stringify(nt))
+            res.end()
         }
     })
 }

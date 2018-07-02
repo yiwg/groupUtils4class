@@ -27,4 +27,4 @@ exports.NoticeTask      = mongoose.model('NoticeTask');
 exports.NoticeUser      = mongoose.model('NoticeUser');
 exports.VoteUser      = mongoose.model('VoteUser');
 exports.VoteTask      = mongoose.model('VoteTask');
-exports.VoteTask      = mongoose.model('VoteCahtGroup');
+exports.VoteCahtGroup      = mongoose.model('VoteCahtGroup');
