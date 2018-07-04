@@ -14,7 +14,7 @@ logger.level = 'debug';
  * @param {Function} callback 回调函数
  */
 exports.getUsersByOpenid = function (openId, callback) {
-  if (openId.length === 0) {
+  if (openId==undefined||openId.length === 0) {
     return callback(null, []);
   }
   WxUser.find({ openId: { $in: openId } }, callback);

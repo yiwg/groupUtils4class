@@ -19,13 +19,14 @@ exports.forex_require_url=function (req, res, next) {
   grant_type=req.query.grant_type;
   logger.debug("grant_type="+grant_type);
   url="https://api.weixin.qq.com/sns/jscode2session?appid="+appid+"&secret="+secret+"&js_code="+js_code+"&grant_type="+grant_type;
+  //url = "https://api.weixin.qq.com/sns/jscode2session?appid=".$appid."&secret=".$secret."&js_code=".$js_code."&grant_type=".$grant_type;
   request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       var jsBody = JSON.parse(body);
       jsBody.status = 100;
       jsBody.msg = '操作成功';
       logger.debug(JSON.stringify(jsBody));
-      var openid="123";//jsBody.openid;
+      var openid=jsBody.openid;
       logger.debug("openid="+openid)
 
       WxUser.getUsersByOpenid(openid,function (err,wxUser) {
